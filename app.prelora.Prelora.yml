@@ -1,8 +1,8 @@
-# Prelora desktop — Flathub / Flatpak manifest (T71.4 / T71.12)
+# Prelora desktop — Flathub / Flatpak manifest (T71.4 / T71.12 / U37 / U38)
 #
 # App ID: app.prelora.Prelora  (owned domain prelora.app — not com.prelora.* / *.desktop)
-# Binary source: public archive on https://prelora.app/downloads/ (type: archive).
-# Update url + sha256 on every release (see docs/dev/linux-downloads.md).
+# Binary source: public archives on https://prelora.app/downloads/ (type: archive, only-arches).
+# Update url + sha256 per arch on every release (see docs/dev/linux-downloads.md).
 #
 # Local build (build dir must share filesystem with .flatpak-builder):
 #   flatpak run --command=flatpak-builder org.flatpak.Builder \
@@ -14,7 +14,7 @@
 
 id: app.prelora.Prelora
 runtime: org.gnome.Platform
-runtime-version: "50"
+runtime-version: "51"
 sdk: org.gnome.Sdk
 command: prelora-desktop
 
@@ -72,12 +72,21 @@ modules:
           fi
         done
     sources:
-      # Stable latest URL — replace sha256 after each R2 upload (required by Flatpak).
-      # Value: files.flatpak_archive.sha256 from https://prelora.app/downloads/latest.json
+      # Per-arch Flatpak archives (U37). Stable latest URLs — replace sha256 after each R2 upload.
+      # Values: files.flatpak_archive.sha256 / files.flatpak_archive_aarch64.sha256 from latest.json
       - type: archive
+        only-arches:
+          - x86_64
         url: https://prelora.app/downloads/latest/prelora-desktop-x86_64.tar.gz
-        sha256: "5cf1ac868a6e4163bc30f971df4c7d4ac6d8a5dbf5a70e986d638d7de7a64171"
+        sha256: "ac52fb4ba28ca1833a2d84f926aee519169a7b51cd6ff6bccba7d652c7c93a04"
         # Archive root is usr/… — do not strip that single top-level dir.
+        strip-components: 0
+      - type: archive
+        only-arches:
+          - aarch64
+        url: https://prelora.app/downloads/latest/prelora-desktop-aarch64.tar.gz
+
+        sha256: "7afed9a6acc7433c3cc328619a3bc3f6c8ef3b940f6390368d212572f4f8a3b1"
         strip-components: 0
       - type: file
         path: app.prelora.Prelora.metainfo.xml
